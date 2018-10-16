@@ -1,5 +1,8 @@
 Revision history for Dancer2-Plugin-CSRF
 
+1.02 2018-10-16T14:11:00
+        Fixed $form_url computation, as salted hash validation.
+
 1.01 2016-12-25T14:14:00
         Dancer2 required version fixed
 

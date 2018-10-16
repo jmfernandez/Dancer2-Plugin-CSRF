@@ -3,7 +3,7 @@ use 5.010;
 use strict;
 use warnings;
 
-our $VERSION = '1.01';
+our $VERSION = '1.02';
 
 use Dancer2::Plugin;
 use Crypt::SaltedHash;
@@ -56,10 +56,7 @@ sub validate_csrf_token {
 		}
 		$form_url = $self->dsl->request->base . $path;
 	}
-	my $expected_token
-		= $HASHER->add( $config->{token}, $form_url )->generate();
-	$HASHER->clear();
-	return $expected_token eq $got_token;
+	return Crypt::SaltedHash->validate($got_token, $config->{token} . $form_url);
 }
 
 1;
@@ -72,7 +69,7 @@ Dancer2::Plugin::CSRF - CSRF tokens generation and validation
 
 =head1 VERSION
 
-Version 1.0
+Version 1.02
 
 =head1 SYNOPSIS
 

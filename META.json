@@ -1,7 +1,8 @@
 {
    "abstract" : "CSRF tokens generation and validation",
    "author" : [
-      "Oleg Nurtdinov <jumpercc@cpan.org>"
+      "Oleg Nurtdinov <jumpercc@cpan.org>",
+      "Jose M. Fernandez <jose.m.fernandez@bsc.es>"
    ],
    "dynamic_config" : 1,
    "generated_by" : "ExtUtils::MakeMaker version 7.24, CPAN::Meta::Converter version 2.150005",
@@ -40,6 +41,6 @@
       }
    },
    "release_status" : "stable",
-   "version" : "1.01",
+   "version" : "1.02",
    "x_serialization_backend" : "JSON::PP version 2.27300"
 }

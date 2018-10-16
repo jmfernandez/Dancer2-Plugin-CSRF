@@ -2,6 +2,7 @@
 abstract: 'CSRF tokens generation and validation'
 author:
   - 'Oleg Nurtdinov <jumpercc@cpan.org>'
+  - 'Jose M. Fernandez <jose.m.fernandez@bsc.es>'
 build_requires:
   Test::More: '0'
 configure_requires:
@@ -22,5 +23,5 @@ requires:
   Dancer2: '0.200001'
   Data::UUID: '0'
   perl: '5.01'
-version: '1.01'
+version: '1.02'
 x_serialization_backend: 'CPAN::Meta::YAML version 0.018'
