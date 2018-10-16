@@ -23,14 +23,22 @@ plugin_keywords qw( get_csrf_token validate_csrf_token );
 
 sub get_csrf_token {
 	my ($self) = @_;
+
 	my $config = $self->dsl->session( $self->session_key_name() );
 	unless ($config) {
 		$config = { token => $UUID->create_str(), };
 		$self->dsl->session( $self->session_key_name() => $config );
 	}
 
-	( my $path = $self->dsl->request->dispatch_path ) =~ s{^/}{};
-	my $form_url = $self->dsl->request->base . $path;
+	my $form_url = $self->dsl->request->header('referer');
+	unless(defined($form_url)) {
+		my $path = $self->dsl->request->dispatch_path;
+		# Does the base ends in a slash?
+		if(substr($self->dsl->request->base,-1,1) eq '/') {
+			$path =~ s{^/}{};
+		}
+		$form_url = $self->dsl->request->base . $path;
+	}
 	my $token = $HASHER->add( $config->{token}, $form_url )->generate();
 	$HASHER->clear();
 	return $token;
@@ -38,8 +46,16 @@ sub get_csrf_token {
 
 sub validate_csrf_token {
 	my ( $self, $got_token ) = @_;
-	my $form_url = $self->dsl->request->header('referer');
 	my $config = $self->dsl->session( $self->session_key_name() ) // return;
+	my $form_url = $self->dsl->request->header('referer');
+	unless(defined($form_url)) {
+		my $path = $self->dsl->request->dispatch_path;
+		# Does the base ends in a slash?
+		if(substr($self->dsl->request->base,-1,1) eq '/') {
+			$path =~ s{^/}{};
+		}
+		$form_url = $self->dsl->request->base . $path;
+	}
 	my $expected_token
 		= $HASHER->add( $config->{token}, $form_url )->generate();
 	$HASHER->clear();
